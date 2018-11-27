@@ -58,15 +58,15 @@ var commentsPhoto = function () {
 *@param {number} n колличество объектов
 *@return {array} photos массив из n объектов
 */
-var creatingArrayPhotos = function (n){
+var creatingArrayPhotos = function (n) {
   var photos = [];
-  for (var i = 0; i<n; i++) {
+  for (var i = 0; i < n; i++) {
     photos[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       likes: randomInteger(15, 200),
       comments: commentsPhoto(),
       description: descriptionPhoto(),
-    }
+    };
   }
   return photos;
 };
