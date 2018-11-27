@@ -27,7 +27,7 @@ function descriptionPhoto() {
     'Не обижайте всех словами......',
     'Вот это тачка!'
   ];
-  value = description[randomInteger(0, description.length-1)];
+  value = description[randomInteger(0, description.length - 1)];
   return value;
 }
 
@@ -35,7 +35,7 @@ function descriptionPhoto() {
 *Данная функция возвращает массив, который состоит из рандомных комментариев.
 *@return {array} commentsPhoto массив с комментариями
 */
-var commentsPhoto = function() {
+var commentsPhoto = function () {
   var comments = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -45,23 +45,24 @@ var commentsPhoto = function() {
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
     'Витюшка одобряет!'
   ];
-  var commentsPhoto = [];
-  var numberComments = randomInteger(1, comments.length-1);
+  var commentsArray = [];
+  var numberComments = randomInteger(1, comments.length - 1);
   for (var i = 0; i <= numberComments; i++) {
-    commentsPhoto[i] = comments[randomInteger(0, comments.length-1)];
+    commentsArray[i] = comments[randomInteger(0, comments.length - 1)];
   }
-  return commentsPhoto;
-}
+  return commentsArray;
+};
 
 /**
 *Фунция создает массив из n объектов
 *@param {number} n колличество объектов
+*@return {array} photos массив из n объектов
 */
 var creatingArrayPhotos = function (n){
   var photos = [];
   for (var i = 0; i<n; i++) {
     photos[i] = {
-      url: 'photos/'+ (i+1) + '.jpg',
+      url: 'photos/' + (i + 1) + '.jpg',
       likes: randomInteger(15, 200),
       comments: commentsPhoto(),
       description: descriptionPhoto(),
@@ -86,7 +87,7 @@ for (var i = 0; i < photos.length; i++) {
   elementLike.textContent = photo.likes;
   elementComment.textContent = (photo.comments).length;
   pictures.appendChild(element);
-};
+}
 
 var bigPicture = document.querySelector('.big-picture');
 var bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
@@ -95,22 +96,20 @@ var bigPictureComentsCountValue = bigPicture.querySelector('.comments-count');
 var bigPictureComents = bigPicture.querySelector('.social__comments');
 var bigPictureComentsItem = bigPicture.querySelector('.social__comment');
 var bigPictureComentsCount = bigPicture.querySelector('.social__comment-count');
-var bigPictureComentsLoader =  bigPicture.querySelector('.comments-loader');
+var bigPictureComentsLoader = bigPicture.querySelector('.comments-loader');
 bigPicture.classList.remove('hidden');
-console.log(photos[0].url);
 bigPictureImg.setAttribute('src', photosItem.url);
 bigPictureLikesCount.textContent = photosItem.likes;
 bigPictureComentsCountValue.textContent = photosItem.comments.length;
 bigPictureComentsLoader.classList.add('visually-hidden');
 bigPictureComentsCount.classList.add('visually-hidden');
 
-for (var i = 0; i < photosItem.comments.length; i++) {
-  var element = bigPictureComentsItem.cloneNode(true);
-  var elementText = element.querySelector('.social__text');
+for (i = 0; i < photosItem.comments.length; i++) {
+  var ComentsItem = bigPictureComentsItem.cloneNode(true);
+  var ComentsText = ComentsItem.querySelector('.social__text');
   var coment = photosItem.comments[i];
-  var commentImg = element.querySelector('.social__picture');
-  console.log(coment);
-  elementText.textContent = coment;
+  var commentImg = ComentsItem.querySelector('.social__picture');
+  ComentsText.textContent = coment;
   commentImg.setAttribute('src', ('img/avatar-' + randomInteger(1, 6) + '.svg'));
-  bigPictureComents.appendChild(element);
+  bigPictureComents.appendChild(ComentsItem);
 }
