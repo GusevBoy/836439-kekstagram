@@ -100,7 +100,7 @@ var fillingPictures = function () {
     elementComment.textContent = (photo.comments).length;
     pictures.appendChild(element);
   }
-}
+};
 /**
 *Данная функция клонирует комментарии в блоке bigPicture
 */
@@ -114,7 +114,7 @@ var addingComments = function () {
     commentImg.setAttribute('src', ('img/avatar-' + randomInteger(1, 6) + '.svg'));
     bigPictureComents.appendChild(ComentsItem);
   }
-}
+};
 
 /**
 *Данная функция делает видимым блок bigPicture и изменяет значения лайков и колличество комментариев
@@ -126,8 +126,10 @@ var visuallyBigPicture = function () {
   bigPictureComentsCountValue.textContent = photosItem.comments.length;
   bigPictureComentsLoader.classList.add('visually-hidden');
   bigPictureComentsCount.classList.add('visually-hidden');
-}
+};
 
 fillingPictures ();
+
 visuallyBigPicture ();
+
 addingComments ();
