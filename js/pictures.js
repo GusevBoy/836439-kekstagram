@@ -128,8 +128,8 @@ var visuallyBigPicture = function () {
   bigPictureComentsCount.classList.add('visually-hidden');
 };
 
-fillingPictures ();
+fillingPictures();
 
-visuallyBigPicture ();
+visuallyBigPicture();
 
-addingComments ();
+addingComments();
