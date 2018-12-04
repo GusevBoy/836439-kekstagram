@@ -1,5 +1,35 @@
 'use strict';
 
+var photos = creatingArrayPhotos(25);
+var bigPicture = document.querySelector('.big-picture');
+var bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
+var bigPictureLikesCount = bigPicture.querySelector('.likes-count');
+var bigPictureComentsCountValue = bigPicture.querySelector('.comments-count');
+// var bigPictureComents = bigPicture.querySelector('.social__comments');
+// var bigPictureComentsItem = bigPicture.querySelector('.social__comment');
+var bigPictureComentsCount = bigPicture.querySelector('.social__comment-count');
+var bigPictureComentsLoader = bigPicture.querySelector('.comments-loader');
+var imageLoadingField = document.querySelector('#upload-file');
+var imageEditingForm = document.querySelector('.img-upload__overlay ');
+var closeButton = document.querySelector('.img-upload__cancel');
+
+/**
+*Данная функция опряделяет процентное соотношение относително промежутка между минимальным значением и максимальным;
+*@param {number} min минимально значене
+*@param {number} max максимальное значение
+*@param {number} percent   процент
+*@return {number} ratio соотношение
+*/
+function determinesRatio(min, max, percent) {
+  if (min < max && percent >= 0) {
+    var ratio = (max - min) * (percent / 100) + min;
+    return ratio;
+  } else {
+    ratio = 0;
+    return ratio;
+  }
+}
+
 /**
 *Данная функция возвращает рандомное число в промежутке чисел от min до max.
 *@param {number} min минимально значене
@@ -35,7 +65,7 @@ function descriptionPhoto() {
 *Данная функция возвращает массив, который состоит из рандомных комментариев.
 *@return {array} commentsPhoto массив с комментариями
 */
-var commentsPhoto = function () {
+function commentsPhoto() {
   var comments = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -51,44 +81,46 @@ var commentsPhoto = function () {
     commentsArray[i] = comments[randomInteger(0, comments.length - 1)];
   }
   return commentsArray;
-};
+}
 
 /**
 *Фунция создает массив из n объектов
 *@param {number} n колличество объектов
 *@return {array} photos массив из n объектов
 */
-var creatingArrayPhotos = function (n) {
-  var photos = [];
+function creatingArrayPhotos(n) {
+  var photosArray = [];
   for (var i = 0; i < n; i++) {
     photos[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       likes: randomInteger(15, 200),
       comments: commentsPhoto(),
       description: descriptionPhoto(),
+
+      /**
+      *Данный метод делает видимым блок bigPicture и изменяет значения лайков и колличество комментариев
+      *@param {number} number  номер фотографии
+      */
+      fullSizeImage: function (number) {
+        var photosItem = photosArray[number];
+        bigPicture.classList.remove('hidden');
+        bigPictureImg.setAttribute('src', photosItem.url);
+        bigPictureLikesCount.textContent = photosItem.likes;
+        bigPictureComentsCountValue.textContent = photosItem.comments.length;
+        bigPictureComentsLoader.classList.add('visually-hidden');
+        bigPictureComentsCount.classList.add('visually-hidden');
+      }
     };
   }
-  return photos;
-};
-
-var photos = creatingArrayPhotos(25);
-var photosItem = photos[3];
-
-var picture = document.querySelector('#picture').content.querySelector('.picture');
-var pictures = document.querySelector('.pictures');
-var bigPicture = document.querySelector('.big-picture');
-var bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
-var bigPictureLikesCount = bigPicture.querySelector('.likes-count');
-var bigPictureComentsCountValue = bigPicture.querySelector('.comments-count');
-var bigPictureComents = bigPicture.querySelector('.social__comments');
-var bigPictureComentsItem = bigPicture.querySelector('.social__comment');
-var bigPictureComentsCount = bigPicture.querySelector('.social__comment-count');
-var bigPictureComentsLoader = bigPicture.querySelector('.comments-loader');
+  return photosArray;
+}
 
 /**
 *Данная функция заполняет картинкавми блок pictures
 */
-var fillingPictures = function () {
+function fillingPictures() {
+  var picture = document.querySelector('#picture').content.querySelector('.picture');
+  var pictures = document.querySelector('.pictures');
   for (var i = 0; i < photos.length; i++) {
     var photo = photos[i];
     var element = picture.cloneNode(true);
@@ -96,40 +128,122 @@ var fillingPictures = function () {
     var elementLike = element.querySelector('.picture__likes');
     var elementComment = element.querySelector('.picture__comments');
     elementImg.setAttribute('src', photo.url);
+    elementImg.setAttribute('value', i);
     elementLike.textContent = photo.likes;
     elementComment.textContent = (photo.comments).length;
     pictures.appendChild(element);
   }
-};
+}
 /**
 *Данная функция клонирует комментарии в блоке bigPicture
 */
-var addingComments = function () {
-  for (var i = 0; i < photosItem.comments.length; i++) {
-    var ComentsItem = bigPictureComentsItem.cloneNode(true);
-    var ComentsText = ComentsItem.querySelector('.social__text');
-    var coment = photosItem.comments[i];
-    var commentImg = ComentsItem.querySelector('.social__picture');
-    ComentsText.textContent = coment;
-    commentImg.setAttribute('src', ('img/avatar-' + randomInteger(1, 6) + '.svg'));
-    bigPictureComents.appendChild(ComentsItem);
-  }
-};
+// function addingComments(i) {
+//   var photosItem = photos[i];
+//   for (var i = 0; i < photosItem.comments.length; i++) {
+//     var ComentsItem = bigPictureComentsItem.cloneNode(true);
+//     var ComentsText = ComentsItem.querySelector('.social__text');
+//     var coment = photosItem.comments[i];
+//     var commentImg = ComentsItem.querySelector('.social__picture');
+//     ComentsText.textContent = coment;
+//     commentImg.setAttribute('src', ('img/avatar-' + randomInteger(1, 6) + '.svg'));
+//     bigPictureComents.appendChild(ComentsItem);
+//   }
+// }
+/**
+*Данная функция добавляет к элементу(element) класс  hidden, тем самым элемент не отображается.
+*@param {string} element можно вставить любой существующий элемент в DOM
+*/
+function сloseElement(element) {
+  element.classList.add('hidden');
+}
+/**
+* В данной функции накладываем эфекты и на картинку
+*/
+function imageOverlay() {
+  var line = document.querySelector('.effect-level__line');
+  var pin = line.querySelector('.effect-level__pin');
+  var effectLevel = document.querySelector('.effect-level__value');
+  var chromeEffect = document.querySelector('#effect-chrome');
+  var noneEffect = document.querySelector('#effect-none');
+  var sepiaEffect = document.querySelector('#effect-sepia');
+  var marvinEffect = document.querySelector('#effect-marvin');
+  var fobosEffect = document.querySelector('#effect-phobos');
+  var heatEffect = document.querySelector('#effect-heat');
+  var preview = document.querySelector('.img-upload__preview');
+  var effectLevelValue = effectLevel.getAttribute('value');
+
+  //  Если произайдет сдвиг ползунка, то измениться css свойство  left, данное значение будет перезаписано в value
+  pin.addEventListener('mouseup', function () {
+  });
+  chromeEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'grayscale(' + determinesRatio(1, 3, effectLevelValue) + ')');
+  });
+  noneEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'none');
+  });
+  sepiaEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'sepia(' + determinesRatio(0, 1, effectLevelValue) + ')');
+  });
+  marvinEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'invert(' + determinesRatio(0, 100, effectLevelValue) + '%)');
+  });
+  fobosEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'blur(' + determinesRatio(0, 3, effectLevelValue) + 'px)');
+  });
+  heatEffect.addEventListener('change', function () {
+    preview.setAttribute('style', 'filter:' + 'brightness(' + determinesRatio(1, 3, effectLevelValue) + ')');
+  });
+}
+/**
+*Данная функция закрывает форму добавления и редактирования при нажатии на крестик или нажатии клавиши ESC
+*/
+function closeDownloadForm() {
+  closeButton.addEventListener('click', function () {
+    сloseElement(imageEditingForm);
+  });
+  imageLoadingField.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
+      сloseElement(imageEditingForm);
+    }
+  });
+}
 
 /**
-*Данная функция делает видимым блок bigPicture и изменяет значения лайков и колличество комментариев
+*Данная функция открывает форму при нажатии нажатии на кнопку Загрузить
 */
-var visuallyBigPicture = function () {
-  bigPicture.classList.remove('hidden');
-  bigPictureImg.setAttribute('src', photosItem.url);
-  bigPictureLikesCount.textContent = photosItem.likes;
-  bigPictureComentsCountValue.textContent = photosItem.comments.length;
-  bigPictureComentsLoader.classList.add('visually-hidden');
-  bigPictureComentsCount.classList.add('visually-hidden');
-};
+function openDownloadForm() {
+// В задании сказано, что необходимо сбросить значение поля выбора файла #upload-file
+  imageLoadingField.addEventListener('change', function () {
+    imageEditingForm.classList.remove('hidden');
+    imageOverlay();
+  });
+}
+
+
+function openBigPicture() {
+  var pictures = document.querySelector('.pictures');
+  pictures.onclick = function (event) {
+    var target = (event.target);
+    var id = target.getAttribute('value');
+    photos[id].fullSizeImage(id);
+  };
+}
+
+function closeBigPicture() {
+  var bigPictureCancel = document.querySelector('.big-picture__cancel');
+  bigPictureCancel.addEventListener('click', function () {
+    сloseElement(bigPicture);
+  });
+  // event.addEventListener('keydown', function(evt) {
+  //   if (evt.keyCode === 27) {
+  //     сloseElement(bigPicture);
+  //   }
+  // });
+}
 
 fillingPictures();
 
-visuallyBigPicture();
-
-addingComments();
+openDownloadForm();
+closeDownloadForm();
+openBigPicture();
+closeBigPicture();
