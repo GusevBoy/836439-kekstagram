@@ -91,7 +91,7 @@ function commentsPhoto() {
 function creatingArrayPhotos(n) {
   var photosArray = [];
   for (var i = 0; i < n; i++) {
-    photos[i] = {
+    photosArray[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       likes: randomInteger(15, 200),
       comments: commentsPhoto(),
@@ -224,21 +224,26 @@ function openBigPicture() {
   var pictures = document.querySelector('.pictures');
   pictures.onclick = function (event) {
     var target = (event.target);
-    var id = target.getAttribute('value');
-    photos[id].fullSizeImage(id);
+    if (target.getAttribute('class') === ('picture__img')) {
+      var id = target.getAttribute('value');
+      if (id !== 'undefined' && id !== null) {
+        photos[id].fullSizeImage(id);
+      }
+    }
   };
 }
 
 function closeBigPicture() {
+  var pictures = document.querySelector('.pictures');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   bigPictureCancel.addEventListener('click', function () {
     сloseElement(bigPicture);
   });
-  // event.addEventListener('keydown', function(evt) {
-  //   if (evt.keyCode === 27) {
-  //     сloseElement(bigPicture);
-  //   }
-  // });
+  pictures.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === 27) {
+      сloseElement(bigPicture);
+    }
+  });
 }
 
 fillingPictures();
