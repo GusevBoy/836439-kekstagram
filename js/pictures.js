@@ -159,7 +159,7 @@ function сloseElement(element) {
 /**
 * В данной функции накладываем эфекты и на картинку
 */
-function imageOverlay() {
+function addEffectToImage() {
   var line = document.querySelector('.effect-level__line');
   var pin = line.querySelector('.effect-level__pin');
   var effectLevel = document.querySelector('.effect-level__value');
@@ -171,7 +171,8 @@ function imageOverlay() {
   var heatEffect = document.querySelector('#effect-heat');
   var preview = document.querySelector('.img-upload__preview');
   var effectLevelValue = effectLevel.getAttribute('value');
-
+  heatEffect.removeAttribute('checked');
+  noneEffect.setAttribute('checked', '');
   //  Если произайдет сдвиг ползунка, то измениться css свойство  left, данное значение будет перезаписано в value
   pin.addEventListener('mouseup', function () {
   });
@@ -195,6 +196,17 @@ function imageOverlay() {
   });
 }
 /**
+*Данная функция открывает форму при нажатии нажатии на кнопку Загрузить
+*/
+function openDownloadForm() {
+// В задании сказано, что необходимо сбросить значение поля выбора файла #upload-file
+  imageLoadingField.addEventListener('change', function () {
+    imageEditingForm.classList.remove('hidden');
+    addEffectToImage();
+    checkingHashTags();
+  });
+}
+/**
 *Данная функция закрывает форму добавления и редактирования при нажатии на крестик или нажатии клавиши ESC
 */
 function closeDownloadForm() {
@@ -207,19 +219,9 @@ function closeDownloadForm() {
     }
   });
 }
-
 /**
-*Данная функция открывает форму при нажатии нажатии на кнопку Загрузить
+*Данная функция открывает большое изображение при нажатие на маленькую картинку из главной страницы
 */
-function openDownloadForm() {
-// В задании сказано, что необходимо сбросить значение поля выбора файла #upload-file
-  imageLoadingField.addEventListener('change', function () {
-    imageEditingForm.classList.remove('hidden');
-    imageOverlay();
-  });
-}
-
-
 function openBigPicture() {
   var pictures = document.querySelector('.pictures');
   pictures.onclick = function (event) {
@@ -232,22 +234,74 @@ function openBigPicture() {
     }
   };
 }
-
+/**
+*Данная функция закрывает большое изображение при нажатие на крестик и esc
+*/
 function closeBigPicture() {
-  var pictures = document.querySelector('.pictures');
   var bigPictureCancel = document.querySelector('.big-picture__cancel');
   bigPictureCancel.addEventListener('click', function () {
     сloseElement(bigPicture);
   });
-  pictures.addEventListener('keydown', function (evt) {
+  bigPicture.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 27) {
       сloseElement(bigPicture);
     }
   });
 }
+/**
+*Данная функция проверяет правильность хэштэгов, которые передаются в форме imgUploadForm.
+*хэш-теги необязательны;
+*хэш-тег начинается с символа # (решётка);
+*хеш-тег не может состоять только из одной решётки;
+*хэш-теги разделяются пробелами;
+*один и тот же хэш-тег не может быть использован дважды;
+*нельзя указать больше пяти хэш-тегов;
+*максимальная длина одного хэш-тега 20 символов, включая решётку;
+*теги нечувствительны к регистру: #ХэшТег и #хэштег считаются одним и тем же тегом.
+*если фокус находится в поле ввода хэш-тега, нажатие на Esc не должно приводить к закрытию формы редактирования изображения.
+*/
+function checkingHashTags() {
+  var imgUploadForm = document.querySelector('.img-upload__form');
+  var hashtags = imgUploadForm.elements.hashtags;
+  var arrayHashtags = [];
+  imgUploadForm.addEventListener('submit', function (event) {
+    arrayHashtags = hashtags.value.split(' ');
+    arrayHashtags.sort();
+    for (var i = 0; i < arrayHashtags.length; i++) {
+      if (arrayHashtags[i] === '') {
+        arrayHashtags.splice(i, 1);
+        i = i - 1;
+      }
+      if (arrayHashtags[i] !== undefined) {
+        if (arrayHashtags[i].length > 20) {
+          // alert('ХэшТэг должен быть меньше 20 символов');
+          event.preventDefault();
+          return;
+        }
+        if (arrayHashtags[i].charAt(0) !== '#') {
+          // alert('ХэшТэг начинается с решетки');
+          event.preventDefault();
+          return;
+        }
+        if (i !== arrayHashtags.length) {
+          if (arrayHashtags[i].toLowerCase() === arrayHashtags[i + 1]) {
+            // customAlert('ХэшТэги не должны повторяться');
+            event.preventDefault();
+
+            return;
+          }
+        }
+      }
+
+    }
+    if (arrayHashtags.length > 5) {
+      // alert('Вы ввели больше пяти ХэшТэгов');
+      event.preventDefault();
+    }
+  });
+}
 
 fillingPictures();
-
 openDownloadForm();
 closeDownloadForm();
 openBigPicture();
