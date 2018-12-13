@@ -133,9 +133,27 @@
       <!-- Здесь будут изображения других пользователей -->
 
     </section>
+  </main>
 
-    <!-- Полноэкранный показ изображения -->
-    <section class="big-picture  overlay  hidden">
+  <footer class="page-footer  container">
+    <div class="page-footer__wrapper">
+      <div class="page-footer__copyright  copyright">
+        <a class="copyright__link  copyright__link--image" href="https://htmlacademy.ru/intensive/javascript"><img src="img/htmla-logo.svg" width="130" height="45" alt="HTML Academy"></a>
+        <p>Сделано в <a class="copyright__link  copyright__link--text" href="https://htmlacademy.ru/intensive/javascript">HTML Academy</a> &copy; 2018</p>
+      </div>
+      <ul class="page-footer__contacts  contacts">
+        <li><a href="https://twitter.com/htmlacademy_ru" class="contacts__link  contacts__link--twitter">Twitter</a></li>
+        <li><a href="https://www.instagram.com/htmlacademy/" class="contacts__link  contacts__link--instagram">Instagtam</a></li>
+        <li><a href="https://www.facebook.com/htmlacademy" class="contacts__link  contacts__link--facebook">Facebook</a></li>
+        <li><a href="https://vk.com/htmlacademy" class="contacts__link  contacts__link--vk">VK</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Полноэкранный показ изображения -->
+  <!-- Переобразовать в template -->
+  <template id="big-picture">
+    <section class="big-picture  overlay ">
       <h2 class="big-picture__title  visually-hidden">Просмотр фотографии</h2>
       <div class="big-picture__preview">
 
@@ -180,22 +198,7 @@
         <button type="reset" class="big-picture__cancel  cancel" id="picture-cancel">Закрыть</button>
       </div>
     </section>
-  </main>
-
-  <footer class="page-footer  container">
-    <div class="page-footer__wrapper">
-      <div class="page-footer__copyright  copyright">
-        <a class="copyright__link  copyright__link--image" href="https://htmlacademy.ru/intensive/javascript"><img src="img/htmla-logo.svg" width="130" height="45" alt="HTML Academy"></a>
-        <p>Сделано в <a class="copyright__link  copyright__link--text" href="https://htmlacademy.ru/intensive/javascript">HTML Academy</a> &copy; 2018</p>
-      </div>
-      <ul class="page-footer__contacts  contacts">
-        <li><a href="https://twitter.com/htmlacademy_ru" class="contacts__link  contacts__link--twitter">Twitter</a></li>
-        <li><a href="https://www.instagram.com/htmlacademy/" class="contacts__link  contacts__link--instagram">Instagtam</a></li>
-        <li><a href="https://www.facebook.com/htmlacademy" class="contacts__link  contacts__link--facebook">Facebook</a></li>
-        <li><a href="https://vk.com/htmlacademy" class="contacts__link  contacts__link--vk">VK</a></li>
-      </ul>
-    </div>
-  </footer>
+  </template>
 
   <!-- Шаблон изображения случайного пользователя -->
   <template id="picture">
