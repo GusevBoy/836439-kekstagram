@@ -2,6 +2,7 @@
 var keyCodeEsc = 27;
 var photos = creatingArrayPhotos(25);
 var main = document.querySelector('main');
+var pictures = document.querySelector('.pictures');
 
 /**
 *опряделяет процентное соотношение относително промежутка между минимальным значением и максимальным;
@@ -128,8 +129,22 @@ function creatingArrayPhotos(n) {
 *заполняет картинкавми блок pictures
 */
 function fillingPictures() {
+  /**
+  *При нажатии на маленькое изображение откроется полноценая картинка
+  *@param {HTMLobject} evt элемент на котором сработало событие
+  */
+  function onClickPhoto(evt) {
+    var target = (evt.target);
+    if (target.getAttribute('class') === ('picture__img')) {
+      var id = target.getAttribute('value');
+      if (id !== 'undefined' && id !== null) {
+        photos[id].fullSizeImage(id);
+      }
+    }
+  }
+
+  pictures.addEventListener('click', onClickPhoto);
   var picture = document.querySelector('#picture').content.querySelector('.picture');
-  var pictures = document.querySelector('.pictures');
   for (var i = 0; i < photos.length; i++) {
     var photo = photos[i];
     var element = picture.cloneNode(true);
@@ -167,6 +182,7 @@ function openDownloadForm() {
   */
   function onCloseButton() {
     closeButton.removeEventListener('click', onCloseButton);
+    changeScaleImg(0);
     сloseElement(imageEditingForm);
     imgUploaadInput.value = '';
   }
@@ -187,14 +203,20 @@ function openDownloadForm() {
   function onClickDowloadButton() {
     closeButton.addEventListener('click', onCloseButton);
     imageLoadingField.addEventListener('keydown', onCloseFormEsc);
-  }
-  dowloadButton.addEventListener('click', onClickDowloadButton);
-  imageLoadingField.addEventListener('change', function () {
-    imageEditingForm.classList.remove('hidden');
 
+  }
+  /**
+  *при срабатывание события делаем блок с формой видимым и применяем проверку хэштэгов и наложение эфектов
+  */
+  function onChangeimageEditingForm() {
+    imageEditingForm.classList.remove('hidden');
     addEffectToImage();
     checkingHashTags();
-  });
+    changeScaleImg(1);
+  }
+  dowloadButton.addEventListener('click', onClickDowloadButton);
+  imageLoadingField.addEventListener('change', onChangeimageEditingForm);
+
 }
 /**
 * В данной функции накладываем эфекты и на картинку
@@ -241,9 +263,11 @@ function checkingHashTags() {
   var imgUploadForm = document.querySelector('.img-upload__form');
   var hashtags = imgUploadForm.elements.hashtags;
   var arrayHashtags = [];
-  imgUploadForm.addEventListener('submit', function (event) {
+  var inputHashtags = document.querySelector('.text__hashtags');
+  function onSubmitForm() {
     arrayHashtags = hashtags.value.split(' ');
     arrayHashtags.sort();
+    inputHashtags.setCustomValidity('');
     for (var i = 0; i < arrayHashtags.length; i++) {
       if (arrayHashtags[i] === '') {
         arrayHashtags.splice(i, 1);
@@ -251,18 +275,19 @@ function checkingHashTags() {
       }
       if (arrayHashtags[i] !== undefined) {
         if (arrayHashtags[i].length > 20) {
-          // alert('ХэшТэг должен быть меньше 20 символов');
+          inputHashtags.setCustomValidity('ХэшТэг должен быть меньше 20 символов');
           event.preventDefault();
           return;
         }
         if (arrayHashtags[i].charAt(0) !== '#') {
-          // alert('ХэшТэг начинается с решетки');
+          inputHashtags.setCustomValidity('ХэшТэг начинается с решетки');
           event.preventDefault();
-          return;
+        } else {
+          inputHashtags.setCustomValidity('');
         }
         if (i !== arrayHashtags.length) {
           if (arrayHashtags[i].toLowerCase() === arrayHashtags[i + 1]) {
-            // customAlert('ХэшТэги не должны повторяться');
+            inputHashtags.setCustomValidity('ХэшТэги не должны повторяться');
             event.preventDefault();
 
             return;
@@ -270,12 +295,68 @@ function checkingHashTags() {
         }
       }
 
+      if (arrayHashtags.length > 5) {
+        inputHashtags.setCustomValidity('Вы ввели больше пяти ХэшТэгов');
+        event.preventDefault();
+        return;
+      }
     }
-    if (arrayHashtags.length > 5) {
-      // alert('Вы ввели больше пяти ХэшТэгов');
-      event.preventDefault();
+  }
+  inputHashtags.addEventListener('input', onSubmitForm);
+}
+/**
+*С помощью флага Вешает и Удалеет слушателей на кноках .scale__control--smaller и .scale__control--bigger'
+*C помощью обработчика onClicksButtons изменяет масштам картинки
+*@param {number} flag  если поставить 1 до на кнопки будут прослушиваться, если 0 то слушатели удаляться
+*/
+function changeScaleImg(flag) {
+  var control = document.querySelector('.img-upload__scale');
+  var minButton = control.querySelector('.scale__control--smaller');
+  var maxButton = control.querySelector('.scale__control--bigger');
+  var controlValue = control.querySelector('.scale__control--value');
+  var imgScale = document.querySelector('.effect-image-preview');
+  /**
+  * При нажатии на кнопки изменяет значение атрибута value у объекта .scale__control--value
+  * Так же добавляет атрибут style со значением 'style', 'transform: scale(value) объекту .effect-image-preview
+  *@param {HTMLobject} clickEvt элемент на котором сработало событие
+  */
+  function onClicksButtons(clickEvt) {
+    var step = 25;
+    var valuePercent = controlValue.getAttribute('value');
+    var value = +(valuePercent.slice(0, -1));
+    var target = clickEvt.target;
+    if (target === minButton) {
+      if ((value - step) >= 25) {
+        value = value - step;
+      }
     }
-  });
+    if (target === maxButton) {
+      if ((value + step) <= 100) {
+        value = value + step;
+      }
+    }
+    controlValue.setAttribute('value', value + '%');
+    imgScale.setAttribute('style', 'transform: scale(' + determinesRatio(0, value, 1) + ')');
+  }
+
+
+  function buttonsAddListener() {
+    minButton.addEventListener('click', onClicksButtons);
+    maxButton.addEventListener('click', onClicksButtons);
+  }
+
+  function buttonsRemoveListener() {
+    minButton.removeEventListener('click', onClicksButtons);
+    maxButton.removeEventListener('click', onClicksButtons);
+  }
+
+  if (flag === 1) {
+    buttonsAddListener();
+  }
+
+  if (flag === 2) {
+    buttonsRemoveListener();
+  }
 }
 fillingPictures();
 openDownloadForm();
