@@ -2,6 +2,7 @@
 var keyCodeEsc = 27;
 var photos = creatingArrayPhotos(25);
 var main = document.querySelector('main');
+var pictures = document.querySelector('.pictures');
 
 /**
 *опряделяет процентное соотношение относително промежутка между минимальным значением и максимальным;
@@ -87,7 +88,7 @@ function creatingArrayPhotos(n) {
       description: descriptionPhoto(),
 
       /**
-      *Данный метод делает видимым блок bigPicture и изменяет значения лайков и колличество комментариев
+      *Создает блок bigPicture, изменяет значения лайков и колличество комментариев
       *@param {number} number  номер фотографии
       */
       fullSizeImage: function (number) {
@@ -97,14 +98,14 @@ function creatingArrayPhotos(n) {
         var bigPictureImg = element.querySelector('.big-picture__img').querySelector('img');
         var bigPictureCancel = element.querySelector('.big-picture__cancel');
         /**
-        *Данный обработчик при нажатии на крестик удаляет элемент с большим изображением и удаляет слушатель
+        *Удаляем элемент с большим изображением, удаляем обработчики
         */
         function onBigPictureCancelClick() {
           bigPictureCancel.removeEventListener('click', onBigPictureCancelClick);
           element.remove();
         }
         /**
-        *Данный обработчик при нажатии на кнопку Esc удаляет элемент с большим изображением и удаляет слушатель
+        *При нажатии Esc удаляем элемент с большим изображением и удаляем обработчики
         *@param {HTMLobject} evt элемент на котором сработало событие
         */
         function onBigPictureKeyDownEsc(evt) {
@@ -128,8 +129,22 @@ function creatingArrayPhotos(n) {
 *заполняет картинкавми блок pictures
 */
 function fillingPictures() {
+  /**
+  *При нажатии на маленькое изображение откроется полноценая картинка
+  *@param {HTMLobject} evt элемент на котором сработало событие
+  */
+  function onClickPhoto(evt) {
+    var target = (evt.target);
+    if (target.getAttribute('class') === ('picture__img')) {
+      var id = target.getAttribute('value');
+      if (id !== 'undefined' && id !== null) {
+        photos[id].fullSizeImage(id);
+      }
+    }
+  }
+
+  pictures.addEventListener('click', onClickPhoto);
   var picture = document.querySelector('#picture').content.querySelector('.picture');
-  var pictures = document.querySelector('.pictures');
   for (var i = 0; i < photos.length; i++) {
     var photo = photos[i];
     var element = picture.cloneNode(true);
@@ -146,104 +161,80 @@ function fillingPictures() {
 }
 
 /**
-*добавляет к элементу(element) класс  hidden, тем самым элемент не отображается.
-*@param {HTMLElement} element можно вставить любой существующий элемент в DOM
-*/
-function сloseElement(element) {
-  element.classList.add('hidden');
-}
-
-/**
-*открывает форму при нажатии нажатии на кнопку Загрузить
+*Открываем форму при нажатии нажатии на кнопку Загрузить
 */
 function openDownloadForm() {
-  var dowloadButton = document.querySelector('.img-upload__control');
-  var closeButton = document.querySelector('.img-upload__cancel');
-  var imageEditingForm = document.querySelector('.img-upload__overlay ');
-  var imageLoadingField = document.querySelector('#upload-file');
-  var imgUploaadInput = document.querySelector('.img-upload__input ');
+  var imageEditingForm = document.querySelector('.img-upload__overlay');
+  var control = document.querySelector('.img-upload__scale');
+  var imgUploadInput = document.querySelector('#upload-file');
+  var closeButton = imageEditingForm.querySelector('.img-upload__cancel');
+  var imgScale = imageEditingForm.querySelector('.effect-image-preview');
+  var minButton = control.querySelector('.scale__control--smaller');
+  var maxButton = control.querySelector('.scale__control--bigger');
+  var controlValue = control.querySelector('.scale__control--value');
+  var imgUploadForm = document.querySelector('.img-upload__form');
+  var hashtags = imgUploadForm.elements.hashtags;
+  var inputHashtags = document.querySelector('.text__hashtags');
+  var effectsList = imageEditingForm.querySelector('.effects__list');
   /**
-  *при нажатии на кнопку .img-upload__cancel скрывает форму
+  * Изменяет значение атрибута value у объекта .scale__control--value
+  * Так же добавляет атрибут style со значением 'style', 'transform: scale(value) объекту .effect-image-preview
+  *@param {HTMLobject} clickEvt объект события
   */
-  function onCloseButton() {
-    closeButton.removeEventListener('click', onCloseButton);
-    сloseElement(imageEditingForm);
-    imgUploaadInput.value = '';
+  function onClicksButtons(clickEvt) {
+    var step = 25;
+    var valuePercent = controlValue.getAttribute('value');
+    var value = +(valuePercent.slice(0, -1));
+    var target = clickEvt.target;
+    if (target === minButton) {
+      if ((value - step) >= 25) {
+        value = value - step;
+      }
+    }
+    if (target === maxButton) {
+      if ((value + step) <= 100) {
+        value = value + step;
+      }
+    }
+    controlValue.setAttribute('value', value + '%');
+    imgScale.setAttribute('style', 'transform: scale(' + determinesRatio(0, value, 1) + ')');
   }
   /**
-  *при нажатии на кнопку Esc скрывает форму
-  *@param {HTMLobject} evt элемент на котором сработало событие
+  *Добавляет эффекты к загружаемому изображению
+  *@param {HTMLobject} clickEvt объект события
   */
-  function onCloseFormEsc(evt) {
-    if (evt.keyCode === keyCodeEsc) {
-      imageLoadingField.removeEventListener('keydown', onCloseFormEsc);
-      сloseElement(imageEditingForm);
-      imgUploaadInput.value = '';
+  function onClickEffects(clickEvt) {
+    var preview = document.querySelector('.img-upload__preview');
+    var effectLevel = imageEditingForm.querySelector('.effect-level__value');
+    var effectLevelValue = effectLevel.getAttribute('value');
+    var target = clickEvt.target;
+    if (target === effectsList.querySelector('#effect-chrome')) {
+      preview.setAttribute('style', 'filter:' + 'grayscale(' + determinesRatio(1, 3, effectLevelValue) + ')');
+    }
+    if (target === effectsList.querySelector('#effect-none')) {
+      preview.setAttribute('style', 'filter:' + 'none');
+    }
+    if (target === effectsList.querySelector('#effect-sepia')) {
+      preview.setAttribute('style', 'filter:' + 'sepia(' + determinesRatio(0, 1, effectLevelValue) + ')');
+    }
+    if (target === effectsList.querySelector('#effect-marvin')) {
+      preview.setAttribute('style', 'filter:' + 'invert(' + determinesRatio(0, 100, effectLevelValue) + '%)');
+    }
+    if (target === effectsList.querySelector('#effect-phobos')) {
+      preview.setAttribute('style', 'filter:' + 'blur(' + determinesRatio(0, 10, effectLevelValue) + 'px)');
+    }
+    if (target === effectsList.querySelector('#effect-heat')) {
+      preview.setAttribute('style', 'filter:' + 'brightness(' + determinesRatio(1, 3, effectLevelValue) + ')');
     }
   }
   /**
-  *при нажатии на кнопку Загрузить на форму и на крестик в форме вешаются обработчики событий
+  *проверяет правильность хэштэгов, которые передаются в форме imgUploadForm.
   */
-  function onClickDowloadButton() {
-    closeButton.addEventListener('click', onCloseButton);
-    imageLoadingField.addEventListener('keydown', onCloseFormEsc);
-  }
-  dowloadButton.addEventListener('click', onClickDowloadButton);
-  imageLoadingField.addEventListener('change', function () {
-    imageEditingForm.classList.remove('hidden');
-
-    addEffectToImage();
-    checkingHashTags();
-  });
-}
-/**
-* В данной функции накладываем эфекты и на картинку
-*/
-function addEffectToImage() {
-  var line = document.querySelector('.effect-level__line');
-  var pin = line.querySelector('.effect-level__pin');
-  var effectLevel = document.querySelector('.effect-level__value');
-  var chromeEffect = document.querySelector('#effect-chrome');
-  var noneEffect = document.querySelector('#effect-none');
-  var sepiaEffect = document.querySelector('#effect-sepia');
-  var marvinEffect = document.querySelector('#effect-marvin');
-  var fobosEffect = document.querySelector('#effect-phobos');
-  var heatEffect = document.querySelector('#effect-heat');
-  var preview = document.querySelector('.img-upload__preview');
-  var effectLevelValue = effectLevel.getAttribute('value');
-  heatEffect.removeAttribute('checked');
-  noneEffect.setAttribute('checked', '');
-  pin.addEventListener('mouseup', function () {
-  });
-  chromeEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'grayscale(' + determinesRatio(1, 3, effectLevelValue) + ')');
-  });
-  noneEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'none');
-  });
-  sepiaEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'sepia(' + determinesRatio(0, 1, effectLevelValue) + ')');
-  });
-  marvinEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'invert(' + determinesRatio(0, 100, effectLevelValue) + '%)');
-  });
-  fobosEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'blur(' + determinesRatio(0, 3, effectLevelValue) + 'px)');
-  });
-  heatEffect.addEventListener('change', function () {
-    preview.setAttribute('style', 'filter:' + 'brightness(' + determinesRatio(1, 3, effectLevelValue) + ')');
-  });
-}
-/**
-*проверяет правильность хэштэгов, которые передаются в форме imgUploadForm.
-*/
-function checkingHashTags() {
-  var imgUploadForm = document.querySelector('.img-upload__form');
-  var hashtags = imgUploadForm.elements.hashtags;
-  var arrayHashtags = [];
-  imgUploadForm.addEventListener('submit', function (event) {
+  function onInputHashtags() {
+    var arrayHashtags = [];
     arrayHashtags = hashtags.value.split(' ');
     arrayHashtags.sort();
+    inputHashtags.setCustomValidity('');
     for (var i = 0; i < arrayHashtags.length; i++) {
       if (arrayHashtags[i] === '') {
         arrayHashtags.splice(i, 1);
@@ -251,31 +242,80 @@ function checkingHashTags() {
       }
       if (arrayHashtags[i] !== undefined) {
         if (arrayHashtags[i].length > 20) {
-          // alert('ХэшТэг должен быть меньше 20 символов');
+          inputHashtags.setCustomValidity('ХэшТэг должен быть меньше 20 символов');
           event.preventDefault();
           return;
         }
         if (arrayHashtags[i].charAt(0) !== '#') {
-          // alert('ХэшТэг начинается с решетки');
+          inputHashtags.setCustomValidity('ХэшТэг начинается с решетки');
           event.preventDefault();
-          return;
+        } else {
+          inputHashtags.setCustomValidity('');
         }
         if (i !== arrayHashtags.length) {
           if (arrayHashtags[i].toLowerCase() === arrayHashtags[i + 1]) {
-            // customAlert('ХэшТэги не должны повторяться');
+            inputHashtags.setCustomValidity('ХэшТэги не должны повторяться');
             event.preventDefault();
-
             return;
           }
         }
       }
 
+      if (arrayHashtags.length > 5) {
+        inputHashtags.setCustomValidity('Вы ввели больше пяти ХэшТэгов');
+        event.preventDefault();
+        return;
+      }
     }
-    if (arrayHashtags.length > 5) {
-      // alert('Вы ввели больше пяти ХэшТэгов');
-      event.preventDefault();
+  }
+  /**
+  *добавляет к элементу(element) класс  hidden, тем самым элемент не отображается.
+  *@param {HTMLElement} element можно вставить любой существующий элемент в DOM
+  */
+  function сloseElement(element) {
+    element.classList.add('hidden');
+  }
+  /**
+  *Удаляет обработчики, сбрасывает значение поля выбора файла #upload-file
+  *Скрывает форму
+  */
+  function removeListenerForm() {
+    imgUploadInput.removeEventListener('keydown', onCloseFormEsc);
+    closeButton.removeEventListener('click', onCloseButton);
+    minButton.removeEventListener('click', onClicksButtons);
+    maxButton.removeEventListener('click', onClicksButtons);
+    inputHashtags.removeEventListener('input', onInputHashtags);
+    effectsList.removeEventListener('click', onClickEffects);
+    сloseElement(imageEditingForm);
+    imgUploadInput.value = '';
+  }
+
+  function onCloseButton() {
+    removeListenerForm();
+  }
+
+  function onCloseFormEsc(evt) {
+    if (evt.keyCode === keyCodeEsc) {
+      removeListenerForm();
     }
-  });
+  }
+
+  /**
+  *Показываем форму, регистрируем обработчики события
+  */
+  function onChangeimageEditingForm() {
+    imageEditingForm.classList.remove('hidden');
+    closeButton.addEventListener('click', onCloseButton);
+    imgUploadInput.addEventListener('keydown', onCloseFormEsc);
+    minButton.addEventListener('click', onClicksButtons);
+    maxButton.addEventListener('click', onClicksButtons);
+    inputHashtags.addEventListener('input', onInputHashtags);
+    effectsList.addEventListener('click', onClickEffects);
+  }
+  imgUploadInput.addEventListener('change', onChangeimageEditingForm);
+
 }
+
+
 fillingPictures();
 openDownloadForm();
