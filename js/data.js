@@ -14,7 +14,7 @@
   *@param {number} percent   процент
   *@return {number} ratio соотношение
   */
-  window.determinesRatio = function(min, max, percent) {
+  window.determinesRatio = function (min, max, percent) {
     if (min < max && percent >= 0) {
       var ratio = (max - min) * (percent / 100) + min;
       return ratio;
@@ -22,7 +22,7 @@
       ratio = 0;
       return ratio;
     }
-  }
+  };
 
   /**
   *возвращает рандомное число в промежутке чисел от min до max.
@@ -112,7 +112,7 @@
           *@param {HTMLobject} evt элемент на котором сработало событие
           */
           function onBigPictureKeyDownEsc(evt) {
-            if (evt.keyCode === keyCodeEsc) {
+            if (evt.keyCode === window.keyCodeEsc) {
               document.removeEventListener('keydown', onBigPictureKeyDownEsc);
               element.remove();
             }

@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var pictures = document.querySelector('.pictures');
   /**
   *При нажатии на маленькое изображение откроется полноценая картинка
   *@param {HTMLobject} evt элемент на котором сработало событие
@@ -10,7 +11,7 @@
     if (target.getAttribute('class') === ('picture__img')) {
       var id = target.getAttribute('value');
       if (id !== 'undefined' && id !== null) {
-        photos[id].fullSizeImage(id);
+        window.photos[id].fullSizeImage(id);
       }
     }
   }

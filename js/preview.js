@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
+  var pictures = document.querySelector('.pictures');
   var picture = document.querySelector('#picture').content.querySelector('.picture');
-  for (var i = 0; i < photos.length; i++) {
-    var photo = photos[i];
+  for (var i = 0; i < window.photos.length; i++) {
+    var photo = window.photos[i];
     var element = picture.cloneNode(true);
     var elementImg = element.querySelector('.picture__img');
     var elementLike = element.querySelector('.picture__likes');

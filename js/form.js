@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-  console.log(photos);
+  var determinesRatio = window.determinesRatio();
   var imageEditingForm = document.querySelector('.img-upload__overlay');
   var control = document.querySelector('.img-upload__scale');
   var imgUploadInput = document.querySelector('#upload-file');
@@ -196,7 +196,7 @@
   }
 
   function onCloseFormEsc(evt) {
-    if (evt.keyCode === keyCodeEsc) {
+    if (evt.keyCode === window.keyCodeEsc) {
       removeListenerForm();
     }
   }
