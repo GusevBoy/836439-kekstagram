@@ -2,7 +2,8 @@
 'use strict';
 
 (function () {
-  var determinesRatio = window.determinesRatio();
+
+  var form = document.querySelector('.img-upload__form');
   var imageEditingForm = document.querySelector('.img-upload__overlay');
   var control = document.querySelector('.img-upload__scale');
   var imgUploadInput = document.querySelector('#upload-file');
@@ -42,7 +43,7 @@
       }
     }
     controlValue.setAttribute('value', value + '%');
-    imgScale.setAttribute('style', 'transform: scale(' + determinesRatio(0, value, 1) + ')');
+    imgScale.setAttribute('style', 'transform: scale(' + window.determinesRatio(0, value, 1) + ')');
   }
   /**
   *Добавляем стили объекту preview
@@ -51,22 +52,22 @@
   function addFiltersImg(object) {
     var preview = document.querySelector('.img-upload__preview');
     if (object === effectsList.querySelector('#effect-chrome')) {
-      preview.setAttribute('style', 'filter:' + 'grayscale(' + determinesRatio(1, 3, effectLevelValue) + ')');
+      preview.setAttribute('style', 'filter:' + 'grayscale(' + window.determinesRatio(1, 3, effectLevelValue) + ')');
     }
     if (object === effectsList.querySelector('#effect-none')) {
       preview.setAttribute('style', 'filter:' + 'none');
     }
     if (object === effectsList.querySelector('#effect-sepia')) {
-      preview.setAttribute('style', 'filter:' + 'sepia(' + determinesRatio(0, 1, effectLevelValue) + ')');
+      preview.setAttribute('style', 'filter:' + 'sepia(' + window.determinesRatio(0, 1, effectLevelValue) + ')');
     }
     if (object === effectsList.querySelector('#effect-marvin')) {
-      preview.setAttribute('style', 'filter:' + 'invert(' + determinesRatio(0, 100, effectLevelValue) + '%)');
+      preview.setAttribute('style', 'filter:' + 'invert(' + window.determinesRatio(0, 100, effectLevelValue) + '%)');
     }
     if (object === effectsList.querySelector('#effect-phobos')) {
-      preview.setAttribute('style', 'filter:' + 'blur(' + determinesRatio(0, 10, effectLevelValue) + 'px)');
+      preview.setAttribute('style', 'filter:' + 'blur(' + window.determinesRatio(0, 10, effectLevelValue) + 'px)');
     }
     if (object === effectsList.querySelector('#effect-heat')) {
-      preview.setAttribute('style', 'filter:' + 'brightness(' + determinesRatio(1, 3, effectLevelValue) + ')');
+      preview.setAttribute('style', 'filter:' + 'brightness(' + window.determinesRatio(1, 3, effectLevelValue) + ')');
     }
   }
   /**
@@ -213,6 +214,61 @@
     inputHashtags.addEventListener('input', onInputHashtags);
     effectsList.addEventListener('click', onClickEffects);
     pin.addEventListener('mousedown', omMousedownPin);
+    form.addEventListener('submit', function (evt) {
+      window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
+      evt.preventDefault();
+      imageEditingForm.classList.add('hidden');
+      imgUploadInput.value = '';
+    });
   }
+
+  function showMessage(templateSelector) {
+    function closeMessagePopup() {
+      var messageDomElement = document.querySelector('.' + templateSelector);
+      console.log('privet');
+      document.querySelector('main').removeChild(messageDomElement);
+      document.removeEventListener('click', onClickAnywhere);
+      document.removeEventListener('keydown', onEscClose);
+      button.removeEventListener('keydown', onEnterClose);
+    };
+
+    // Закрывает сообщение по клику на любой области страницы
+    function onClickAnywhere() {
+      closeMessagePopup();
+    };
+
+    // Закрывает сообщение по Esc
+    function onEscClose(evt) {
+      if (evt.keyCode === window.keyCodeEsc) {
+        closeMessagePopup();
+      }
+    };
+
+    // Закрывает сообщение по Enter
+    function onEnterClose(evt) {
+      if (evt.keyCode === window.keyCodeEnter) {
+        closeMessagePopup();
+      }
+    };
+
+    var templateBlock = document.querySelector('#' + templateSelector).content;
+    var messageElement =  templateBlock.cloneNode(true);
+    document.querySelector('main').appendChild(messageElement);
+    document.addEventListener('click', onClickAnywhere);
+    document.addEventListener('keydown', onEscClose);
+    var buttonClassName = '.' + templateSelector + '__button';
+    var button = document.querySelector(buttonClassName);
+    console.log(button);
+    button.addEventListener('click', onClickAnywhere);
+  }
+
+  function showSuccessMessage() {
+    showMessage('success');
+  };
+
+  function showErrorMessage() {
+    showMessage('error');
+  };
+
   imgUploadInput.addEventListener('change', onChangeimageEditingForm);
 })();

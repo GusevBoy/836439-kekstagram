@@ -2,6 +2,7 @@
 
 (function () {
   window.keyCodeEsc = 27;
+  window.keyCodeEnter = 13;
   window.photos = creatingArrayPhotos(25);
   window.pictures = document.querySelector('.pictures');
   var main = document.querySelector('main');
@@ -90,41 +91,10 @@
         comments: commentsPhoto(),
         description: descriptionPhoto(),
 
-        /**
-        *Создает блок bigPicture, изменяет значения лайков и колличество комментариев
-        *@param {number} number  номер фотографии
-        */
-        fullSizeImage: function (number) {
-          var photosItem = photosArray[number];
-          var bigPicture = document.querySelector('#big-picture').content.querySelector('.big-picture');
-          var element = bigPicture.cloneNode(true);
-          var bigPictureImg = element.querySelector('.big-picture__img').querySelector('img');
-          var bigPictureCancel = element.querySelector('.big-picture__cancel');
-          /**
-          *Удаляем элемент с большим изображением, удаляем обработчики
-          */
-          function onBigPictureCancelClick() {
-            bigPictureCancel.removeEventListener('click', onBigPictureCancelClick);
-            element.remove();
-          }
-          /**
-          *При нажатии Esc удаляем элемент с большим изображением и удаляем обработчики
-          *@param {HTMLobject} evt элемент на котором сработало событие
-          */
-          function onBigPictureKeyDownEsc(evt) {
-            if (evt.keyCode === window.keyCodeEsc) {
-              document.removeEventListener('keydown', onBigPictureKeyDownEsc);
-              element.remove();
-            }
-          }
-          bigPictureImg.setAttribute('src', photosItem.url);
-          bigPictureImg.setAttribute('alt', photosItem.description);
-          main.appendChild(element);
-          bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
-          document.addEventListener('keydown', onBigPictureKeyDownEsc);
-        }
+
       };
     }
+
     return photosArray;
   }
 })();
