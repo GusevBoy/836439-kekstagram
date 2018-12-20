@@ -225,50 +225,48 @@
   function showMessage(templateSelector) {
     function closeMessagePopup() {
       var messageDomElement = document.querySelector('.' + templateSelector);
-      console.log('privet');
       document.querySelector('main').removeChild(messageDomElement);
       document.removeEventListener('click', onClickAnywhere);
       document.removeEventListener('keydown', onEscClose);
       button.removeEventListener('keydown', onEnterClose);
-    };
+    }
 
     // Закрывает сообщение по клику на любой области страницы
     function onClickAnywhere() {
       closeMessagePopup();
-    };
+    }
 
     // Закрывает сообщение по Esc
     function onEscClose(evt) {
       if (evt.keyCode === window.keyCodeEsc) {
         closeMessagePopup();
       }
-    };
+    }
 
     // Закрывает сообщение по Enter
     function onEnterClose(evt) {
       if (evt.keyCode === window.keyCodeEnter) {
         closeMessagePopup();
       }
-    };
+    }
 
     var templateBlock = document.querySelector('#' + templateSelector).content;
-    var messageElement =  templateBlock.cloneNode(true);
+    var messageElement = templateBlock.cloneNode(true);
     document.querySelector('main').appendChild(messageElement);
     document.addEventListener('click', onClickAnywhere);
     document.addEventListener('keydown', onEscClose);
     var buttonClassName = '.' + templateSelector + '__button';
     var button = document.querySelector(buttonClassName);
-    console.log(button);
     button.addEventListener('click', onClickAnywhere);
   }
 
   function showSuccessMessage() {
     showMessage('success');
-  };
+  }
 
   function showErrorMessage() {
     showMessage('error');
-  };
+  }
 
   imgUploadInput.addEventListener('change', onChangeimageEditingForm);
 })();

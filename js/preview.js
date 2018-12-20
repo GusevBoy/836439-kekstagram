@@ -21,8 +21,6 @@
   }
 
   function onSuccess(wizards) {
-    var fragment = document.createDocumentFragment();
-
     var picturesCollection = window.pictures.querySelectorAll('.picture');
     for (var i = 0; i < picturesCollection.length; i++) {
       picturesCollection[i].remove();
@@ -30,7 +28,8 @@
     function onClickPhoto(evt) {
       window.openingBigPicture(evt, wizards);
     }
-    fillPictures (wizards);
+
+    fillPictures(wizards);
     pictures.addEventListener('click', onClickPhoto);
   }
 

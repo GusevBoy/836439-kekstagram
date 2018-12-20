@@ -12,7 +12,7 @@
    * @param {function} onLoad — функция обратного вызова, которая срабатывает при успешном выполнении запроса.
    * @param {function} onError — функция обратного вызова, которая срабатывает при неуспешном выполнении запроса.
    */
-  function configureXhr (xhr, onLoad, onError) {
+  function configureXhr(xhr, onLoad, onError) {
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {
@@ -28,7 +28,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
     xhr.timeout = SERVER_ANSWER_WAIT;
-  };
+  }
   /**
   * загружает данные с сервера
   * @param {function} onLoad — функция обратного вызова, которая срабатывает при успешном выполнении запроса.
