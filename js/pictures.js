@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  window.PicturesModule = {};
   /**
   *Создает блок bigPicture, изменяет значения лайков и колличество комментариев
   *@param {number} number  номер фотографии
@@ -99,7 +100,8 @@
   *@param {HTMLobject} evt элемент на котором сработало событие
   *@param {Array} array массив объектов
   */
-  window.openingBigPicture = function (evt, array) {
+
+  window.PicturesModule.openingBigPicture = function (evt, array) {
     var target = (evt.target);
     if (target.getAttribute('class') === ('picture__img')) {
       var id = target.getAttribute('value');

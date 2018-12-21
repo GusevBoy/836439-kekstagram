@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  
   window.keyCodeEsc = 27;
   window.keyCodeEnter = 13;
   window.pictures = document.querySelector('.pictures');

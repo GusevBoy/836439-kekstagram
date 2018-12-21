@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  window.BackendModule = {};
   var DATA_URL = 'https://js.dump.academy/kekstagram/data';
   var POST_URL = 'https://js.dump.academy/kekstagram';
   var STATUS_OK = 200;
@@ -34,7 +35,7 @@
   * @param {function} onLoad — функция обратного вызова, которая срабатывает при успешном выполнении запроса.
   * @param {function} onError — функция обратного вызова, которая срабатывает при неуспешном выполнении запроса.
   */
-  window.load = function (onLoad, onError) {
+  window.BackendModule.loadPictures = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     configureXhr(xhr, onLoad, onError);
     xhr.open('GET', DATA_URL);
@@ -47,7 +48,7 @@
   * @param {function} onLoad — функция обратного вызова, которая срабатывает при успешном выполнении запроса
   * @param {function} onError — функция обратного вызова, которая срабатывает при неуспешном выполнении запроса.
   */
-  window.upload = function (data, onLoad, onError) {
+  window.BackendModule.uploadPictures = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     configureXhr(xhr, onLoad, onError);

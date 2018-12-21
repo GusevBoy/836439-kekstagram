@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var form = document.querySelector('.img-upload__form');
   var imageEditingForm = document.querySelector('.img-upload__overlay');
   var control = document.querySelector('.img-upload__scale');
@@ -214,7 +213,7 @@
     effectsList.addEventListener('click', onClickEffects);
     pin.addEventListener('mousedown', omMousedownPin);
     form.addEventListener('submit', function (evt) {
-      window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
+      window.BackendModule.upload(new FormData(form), showSuccessMessage, showErrorMessage);
       evt.preventDefault();
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';

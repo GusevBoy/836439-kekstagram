@@ -4,8 +4,9 @@
  * Устранение дребезга.
  */
 (function () {
+  window.ModuleDebounce = {};
   var DEBOUNCE_INTERVAL = 500; // ms
-  window.debounce = function (callBack) {
+  window.ModuleDebounce.debounce = function (callBack) {
     var lastTimeout = null;
 
     return function () {
