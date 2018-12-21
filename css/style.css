@@ -50,7 +50,7 @@ main {
   display: none;
 }
 
-.error-message{
+.error-message {
   z-index: 100;
   margin: 0 auto;
   text-align: center;

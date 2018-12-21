@@ -4,7 +4,7 @@
   window.sortPictures = function () {
     var filterButtons = document.querySelector('.img-filters__form');
     var pictures = document.querySelector('.pictures');
-    var picturesArray = document.querySelectorAll('.picture');
+    var picturesArray = Array.from(document.querySelectorAll('.picture'));
     var picturesArrayClone = Array.from(picturesArray);
 
         function myRandom() {
