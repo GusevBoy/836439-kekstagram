@@ -50,6 +50,20 @@ main {
   display: none;
 }
 
+.error-message {
+  z-index: 100;
+  margin: 0 auto;
+  text-align: center;
+  background-color: red;
+  padding: 20px 0;
+  border:solid indigo 2px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-size: 30px;
+
+}
+
 .visually-hidden {
   position: absolute;
 
