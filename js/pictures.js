@@ -15,7 +15,7 @@
     var likesCount = element.querySelector('.likes-count');
     // var buttonLoaderComments = photosItem.querySelector('.social__comments-loader');
 
-    // добавляет комментарии
+    // добавляет комментарии.
     /**
     *добавляет комментарий
     *@param {DOMobject} block  объект, которому добавляем комментарии

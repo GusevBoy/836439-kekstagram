@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Устранение дребезга
+ * Устранение дребезга.
  */
 (function () {
   var DEBOUNCE_INTERVAL = 500; // ms

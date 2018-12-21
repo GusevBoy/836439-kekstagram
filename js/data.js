@@ -10,7 +10,7 @@
   *@param {number} min минимально значене
   *@param {number} max максимальное значение
   *@param {number} percent   процент
-  *@return {number} ratio соотношение
+  *@return {number} ratio соотношение.
   */
   window.determinesRatio = function (min, max, percent) {
     if (min < max && percent >= 0) {

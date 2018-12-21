@@ -14,7 +14,7 @@
       }
     }
 
-    // очищаем поле от изображений
+    // очищаем поле от изображений.
     function clearPictures() {
       for (var i = 0; i < picturesArray.length; i++) {
         picturesArray[i].remove();

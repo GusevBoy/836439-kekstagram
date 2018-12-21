@@ -129,7 +129,7 @@
   }
   /**
   *Перемещаем ползунок. При перемещении изменяется уровень эффекта
-  *@param {HTMLobject} evt элемент на котором сработало событие
+  *@param {HTMLobject} evt элемент на котором сработало событие.
   */
   function omMousedownPin(evt) {
     evt.preventDefault();
