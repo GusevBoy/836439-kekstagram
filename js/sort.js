@@ -7,47 +7,47 @@
     var picturesArray = Array.from(document.querySelectorAll('.picture'));
     var picturesArrayClone = Array.from(picturesArray);
 
-        function myRandom() {
-          if (Math.random() > 0.5) {
-            return 1;
-          } else {
-            return -1;
-          }
-        }
+    function myRandom() {
+      if (Math.random() > 0.5) {
+        return 1;
+      } else {
+        return -1;
+      }
+    }
 
-        // очищаем поле от изображений.
-        function clearPictures() {
-          for (var i = 0; i < picturesArray.length; i++) {
-            picturesArray[i].remove();
-          }
-        }
+    // очищаем поле от изображений.
+    function clearPictures() {
+      for (var i = 0; i < picturesArray.length; i++) {
+        picturesArray[i].remove();
+      }
+    }
 
-        function onClickPopular() {
-          clearPictures();
-          for (var i = 0; i < picturesArrayClone.length; i++) {
-            pictures.appendChild(picturesArrayClone[i]);
-          }
-        }
+    function onClickPopular() {
+      clearPictures();
+      for (var i = 0; i < picturesArrayClone.length; i++) {
+        pictures.appendChild(picturesArrayClone[i]);
+      }
+    }
 
-        function onClickNew() {
-          clearPictures();
-          picturesArray = picturesArray.sort(function (right, left) {
-            return myRandom();
-          });
-          for (var j = 0; j < 10; j++) {
-            pictures.appendChild(picturesArray[j]);
-          }
-        }
+    function onClickNew() {
+      clearPictures();
+      picturesArray = picturesArray.sort(function () {
+        return myRandom();
+      });
+      for (var j = 0; j < 10; j++) {
+        pictures.appendChild(picturesArray[j]);
+      }
+    }
 
-        function onClickDiscussed() {
-          clearPictures();
-          picturesArray = picturesArray.sort(function (right, left) {
-            return left.querySelector('.picture__comments').textContent - right.querySelector('.picture__comments').textContent;
-          });
-          for (var i = 0; i < picturesArray.length; i++) {
-            pictures.appendChild(picturesArray[i]);
-          }
-        }
+    function onClickDiscussed() {
+      clearPictures();
+      picturesArray = picturesArray.sort(function (right, left) {
+        return left.querySelector('.picture__comments').textContent - right.querySelector('.picture__comments').textContent;
+      });
+      for (var i = 0; i < picturesArray.length; i++) {
+        pictures.appendChild(picturesArray[i]);
+      }
+    }
 
     function onClickfilterButtons(clickEvt) {
       function makeButtonActive(target) {
