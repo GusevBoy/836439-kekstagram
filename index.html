@@ -13,7 +13,7 @@
   <main>
 
     <!-- Фильтрация изображений от других пользователей -->
-    <section class="img-filters  img-filters--inactive  container">
+    <section class="img-filters" style="display:none" container">
       <h2 class="img-filters__title  visually-hidden">Фильтр фотографий</h2>
       <form class="img-filters__form" action="index.html" method="get" autocomplete="off">
         <button type=button class="img-filters__button  img-filters__button--active" id="filter-popular">Популярные</button>
@@ -171,7 +171,7 @@
           </div>
 
           <!-- Комментарии к изображению -->
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"><span class="comments-count">5</span> из <span class="max-comments-count">125</span> комментариев</div>
           <ul class="social__comments">
             <li class="social__comment">
               <img class="social__picture" src="" alt="Аватар комментатора фотографии" width="35" height="35">
@@ -224,7 +224,7 @@
   <template id="success">
     <section class="success">
       <div class="success__inner">
-        <h2 class="success__title">Изображение успешно загружено</h2>
+        <h2 class="success__title">Изображение успешно загружено!</h2>
         <button type="button" class="success__button">Круто!</button>
       </div>
     </section>
@@ -234,6 +234,7 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="js/sort.js"></script>
   <script src="js/backend.js"></script>
   <script src="js/data.js"></script>
   <script src="js/pictures.js"></script>

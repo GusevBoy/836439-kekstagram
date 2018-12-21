@@ -21,16 +21,14 @@
   }
 
   function onSuccess(wizards) {
-    var picturesCollection = window.pictures.querySelectorAll('.picture');
-    for (var i = 0; i < picturesCollection.length; i++) {
-      picturesCollection[i].remove();
-    }
+
     function onClickPhoto(evt) {
       window.openingBigPicture(evt, wizards);
     }
 
     fillPictures(wizards);
     pictures.addEventListener('click', onClickPhoto);
+    window.sortPictures();
   }
 
   function onError(errorMessage) {
@@ -40,7 +38,6 @@
     node.style.left = 0;
     node.style.right = 0;
     node.style.fontSize = '30px';
-
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   }

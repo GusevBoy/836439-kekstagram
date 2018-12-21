@@ -129,7 +129,7 @@
   }
   /**
   *Перемещаем ползунок. При перемещении изменяется уровень эффекта
-  *@param {HTMLobject} evt элемент на котором сработало событие
+  *@param {HTMLobject} evt элемент на котором сработало событие.
   */
   function omMousedownPin(evt) {
     evt.preventDefault();
@@ -219,6 +219,7 @@
       evt.preventDefault();
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';
+      document.querySelector('.img-filters').setAttribute('style', 'display:flex');
     });
   }
 
