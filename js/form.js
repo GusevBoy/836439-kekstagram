@@ -1,4 +1,3 @@
-// Файл form.js
 'use strict';
 
 (function () {
