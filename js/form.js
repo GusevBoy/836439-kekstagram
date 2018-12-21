@@ -219,6 +219,7 @@
       evt.preventDefault();
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';
+      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
     });
   }
 

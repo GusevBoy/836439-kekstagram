@@ -13,24 +13,61 @@
     var bigPictureImg = element.querySelector('.big-picture__img').querySelector('img');
     var bigPictureCancel = element.querySelector('.big-picture__cancel');
     var likesCount = element.querySelector('.likes-count');
+    // var buttonLoaderComments = photosItem.querySelector('.social__comments-loader');
 
     // добавляет комментарии
+    /**
+    *добавляет комментарий
+    *@param {DOMobject} block  объект, которому добавляем комментарии
+    */
     function changeInfo(block) {
       var description = block.querySelector('.social__caption');
       var commentsArray = photosItem.comments;
       var comentsList = block.querySelector('.social__comments');
       var comment = comentsList.querySelector('.social__comment');
-      var comentsCount = block.querySelector('.social__comment-count');
-      comment.querySelector('.social__text').textContent = commentsArray[0].message;
-      comment.querySelector('.social__picture').setAttribute('src', commentsArray[0].avatar);
-      for (var i = 1; i < commentsArray.length; i++) {
+      var buttonLoader = element.querySelector('.social__comments-loader');
+
+      function addСomment(i) {
         var commentElement = block.querySelector('.social__comment').cloneNode(true);
         comentsList.appendChild(commentElement);
+        commentElement.setAttribute('style', '');
         commentElement.querySelector('.social__text').textContent = commentsArray[i].message;
         commentElement.querySelector('.social__picture').setAttribute('src', commentsArray[i].avatar);
       }
+      var numbersComents = 5;
+      if (numbersComents < commentsArray.length) {
+        for (var i = 0; i < 5; i++) {
+          addСomment(i);
+        }
+      } else {
+        for (var k = 0; k < commentsArray.length; k++) {
+          addСomment(k);
+          buttonLoader.setAttribute('class', 'hidden');
+        }
+      }
+
+      comment.setAttribute('style', 'display: none');
       description.textContent = photosItem.description;
-      comentsCount.textContent = (commentsArray.length + ' из ' + commentsArray.length + ' комментариев');
+      element.querySelector('.comments-count').textContent = element.querySelectorAll('.social__comment').length - 1;
+      element.querySelector('.max-comments-count').textContent = commentsArray.length;
+
+
+      function onClickLoader() {
+        var commentCount = element.querySelectorAll('.social__comment').length - 1;
+        if (commentCount + 5 < commentsArray.length) {
+          for (var j = commentCount; j < commentCount + 5; j++) {
+            addСomment(j);
+            element.querySelector('.comments-count').textContent = commentCount + 5;
+          }
+        } else {
+          for (var q = commentCount; q < commentsArray.length; q++) {
+            addСomment(q);
+            element.querySelector('.comments-count').textContent = commentsArray.length;
+            buttonLoader.setAttribute('class', 'hidden');
+          }
+        }
+      }
+      buttonLoader.addEventListener('click', onClickLoader);
     }
     changeInfo(element);
     /**
