@@ -34,7 +34,7 @@
   * @param {function} onLoad — функция обратного вызова, которая срабатывает при успешном выполнении запроса.
   * @param {function} onError — функция обратного вызова, которая срабатывает при неуспешном выполнении запроса.
   */
-  window.load = function (onLoad, onError) {
+  window.loadPictures = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     configureXhr(xhr, onLoad, onError);
     xhr.open('GET', DATA_URL);
