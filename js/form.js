@@ -1,4 +1,3 @@
-// Файл form.js
 'use strict';
 
 (function () {
@@ -244,6 +243,7 @@
       window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';
+
       form.reset();
       form.removeEventListener('submit', onSubmitForm);
       document.querySelector('.img-filters').classList.remove('hidden');

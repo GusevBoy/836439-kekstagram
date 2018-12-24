@@ -13,7 +13,9 @@
   <main>
 
     <!-- Фильтрация изображений от других пользователей -->
+
     <section class="img-filters hidden container">
+
       <h2 class="img-filters__title  visually-hidden">Фильтр фотографий</h2>
       <form class="img-filters__form" action="index.html" method="get" autocomplete="off">
         <button type=button class="img-filters__button  img-filters__button--active" id="filter-popular">Популярные</button>
@@ -234,6 +236,7 @@
   <template id="messages">
     <div class="img-upload__message  img-upload__message--loading">Загружаем...</div>
   </template>
+  <script src="js/debounce.js"></script>
   <script src="js/sort.js"></script>
   <script src="js/backend.js"></script>
   <script src="js/data.js"></script>
