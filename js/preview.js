@@ -29,6 +29,7 @@
     fillPictures(wizards);
     pictures.addEventListener('click', onClickPhoto);
     window.sortPictures();
+    document.querySelector('.img-filters').classList.remove('hidden');
   }
 
   function onError(errorMessage) {
