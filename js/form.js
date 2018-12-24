@@ -234,8 +234,6 @@
 
   function onCloseFormEsc(evt) {
     if (evt.keyСode === window.KEY_CODE_ESC || evt.key === 'Escape') {
-      console.log('keyCode:'+evt.keyСode );
-      console.log('Key:'+evt.key );
       if (evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description')) {
         return;
       } else {
