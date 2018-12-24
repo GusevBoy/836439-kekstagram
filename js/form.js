@@ -32,14 +32,16 @@
     var STEP = 25;
     var valuePercent = controlValue.getAttribute('value');
     var VALUE_SCALE = +(valuePercent.slice(0, -1));
+    var MINIMAL_SCALE_VALUE = 25;
+    var MAXIMUM_SCALE_VALUE = 100;
     var target = clickEvt.target;
     if (target === minButton) {
-      if ((VALUE_SCALE - STEP) >= 25) {
+      if ((VALUE_SCALE - STEP) >= MINIMAL_SCALE_VALUE) {
         VALUE_SCALE = VALUE_SCALE - STEP;
       }
     }
     if (target === maxButton) {
-      if ((VALUE_SCALE + STEP) <= 100) {
+      if ((VALUE_SCALE + STEP) <= MAXIMUM_SCALE_VALUE) {
         VALUE_SCALE = VALUE_SCALE + STEP;
       }
     }
