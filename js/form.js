@@ -231,7 +231,7 @@
     if (evt.target.classList.contains('img-upload__overlay')) {
       removeListenerForm();
     } else {
-      console.log(evt.target);
+      return;
     }
   }
 
