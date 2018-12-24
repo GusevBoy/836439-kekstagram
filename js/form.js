@@ -1,3 +1,4 @@
+// Файл form.js
 'use strict';
 
 (function () {
@@ -205,6 +206,7 @@
     inputHashtags.removeEventListener('input', onInputHashtags);
     effectsList.removeEventListener('click', onClickEffects);
     pin.removeEventListener('mousedown', omMousedownPin);
+    document.querySelector('.img-upload__wrapper').removeEventListener('click', onCloseOverlay);
     сloseElement(imageEditingForm);
     imgUploadInput.value = '';
     inputHashtags.setAttribute('style', 'none');
@@ -225,6 +227,14 @@
     }
   }
 
+  function onCloseOverlay(evt) {
+    if (evt.target.classList.contains('img-upload__overlay')) {
+      removeListenerForm();
+    } else {
+      console.log(evt.target);
+    }
+  }
+
   /**
   *Показываем форму, регистрируем обработчики события
   */
@@ -237,13 +247,13 @@
     inputHashtags.addEventListener('input', onInputHashtags);
     effectsList.addEventListener('click', onClickEffects);
     pin.addEventListener('mousedown', omMousedownPin);
+    document.querySelector('.img-upload__wrapper').addEventListener('click', onCloseOverlay);
 
     function onSubmitForm(evt) {
       evt.preventDefault();
       window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';
-
       form.reset();
       form.removeEventListener('submit', onSubmitForm);
       document.querySelector('.img-filters').classList.remove('hidden');

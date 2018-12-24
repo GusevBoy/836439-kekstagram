@@ -27,6 +27,7 @@
       var comment = commentsList.querySelector('.social__comment');
       var buttonLoader = element.querySelector('.social__comments-loader');
 
+
       function addComment(i) {
         var commentElement = block.querySelector('.social__comment').cloneNode(true);
         commentsList.appendChild(commentElement);
@@ -77,6 +78,7 @@
       bigPictureCancel.removeEventListener('click', onBigPictureCancelClick);
       element.remove();
     }
+
     /**
     *При нажатии Esc удаляем элемент с большим изображением и удаляем обработчики
     *@param {HTMLObject} evt элемент на котором сработало событие
