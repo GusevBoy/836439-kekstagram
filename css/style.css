@@ -46,10 +46,6 @@ main {
           box-sizing: content-box;
 }
 
-.hidden {
-  display: none;
-}
-
 .error-message {
   z-index: 100;
   margin: 0 auto;
@@ -609,7 +605,7 @@ main {
 .effect-level__pin {
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 100%;
   z-index: 1;
 
   width: 18px;
@@ -629,7 +625,7 @@ main {
 .effect-level__depth {
   position: absolute;
 
-  width: 20%;
+  width: 100%;
   height: 100%;
 
   background-color: #ffe753;
@@ -1460,4 +1456,9 @@ main {
     -ms-grid-row-span: 3;
     grid-row: 1 / span 3;
   }
+}
+
+
+.hidden {
+  display: none;
 }

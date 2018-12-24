@@ -18,30 +18,30 @@
     // добавляет комментарии.
     /**
     *добавляет комментарий
-    *@param {DOMobject} block  объект, которому добавляем комментарии
+    *@param {DOMObject} block  объект, которому добавляем комментарии
     */
     function changeInfo(block) {
       var description = block.querySelector('.social__caption');
       var commentsArray = photosItem.comments;
-      var comentsList = block.querySelector('.social__comments');
-      var comment = comentsList.querySelector('.social__comment');
+      var commentsList = block.querySelector('.social__comments');
+      var comment = commentsList.querySelector('.social__comment');
       var buttonLoader = element.querySelector('.social__comments-loader');
 
-      function addСomment(i) {
+      function addComment(i) {
         var commentElement = block.querySelector('.social__comment').cloneNode(true);
-        comentsList.appendChild(commentElement);
+        commentsList.appendChild(commentElement);
         commentElement.setAttribute('style', '');
         commentElement.querySelector('.social__text').textContent = commentsArray[i].message;
         commentElement.querySelector('.social__picture').setAttribute('src', commentsArray[i].avatar);
       }
-      var numbersComents = 5;
-      if (numbersComents < commentsArray.length) {
+      var NUMBERS_COMMENTS = 5;
+      if (NUMBERS_COMMENTS < commentsArray.length) {
         for (var i = 0; i < 5; i++) {
-          addСomment(i);
+          addComment(i);
         }
       } else {
         for (var k = 0; k < commentsArray.length; k++) {
-          addСomment(k);
+          addComment(k);
           buttonLoader.setAttribute('class', 'hidden');
         }
       }
@@ -56,12 +56,12 @@
         var commentCount = element.querySelectorAll('.social__comment').length - 1;
         if (commentCount + 5 < commentsArray.length) {
           for (var j = commentCount; j < commentCount + 5; j++) {
-            addСomment(j);
+            addComment(j);
             element.querySelector('.comments-count').textContent = commentCount + 5;
           }
         } else {
           for (var q = commentCount; q < commentsArray.length; q++) {
-            addСomment(q);
+            addComment(q);
             element.querySelector('.comments-count').textContent = commentsArray.length;
             buttonLoader.setAttribute('class', 'hidden');
           }
@@ -79,10 +79,10 @@
     }
     /**
     *При нажатии Esc удаляем элемент с большим изображением и удаляем обработчики
-    *@param {HTMLobject} evt элемент на котором сработало событие
+    *@param {HTMLObject} evt элемент на котором сработало событие
     */
     function onBigPictureKeyDownEsc(evt) {
-      if (evt.keyCode === window.keyCodeEsc) {
+      if (evt.keyCode === window.KEY_CODE_ESC) {
         document.removeEventListener('keydown', onBigPictureKeyDownEsc);
         element.remove();
       }
@@ -96,7 +96,7 @@
 
   /**
   *При нажатии на маленькое изображение откроется полноценая картинка
-  *@param {HTMLobject} evt элемент на котором сработало событие
+  *@param {HTMLObject} evt элемент на котором сработало событие
   *@param {Array} array массив объектов
   */
   window.openingBigPicture = function (evt, array) {

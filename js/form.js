@@ -22,57 +22,64 @@
   var lineDepth = effectLevel.querySelector('.effect-level__depth');
   var effectLevelInput = effectLevel.querySelector('.effect-level__value');
   var effectLevelValue = effectLevelInput.value;
+
   /**
   * Изменяет значение атрибута value у объекта .scale__control--value
   * Так же добавляет атрибут style со значением 'style', 'transform: scale(value) объекту .effect-image-preview
-  *@param {HTMLobject} clickEvt объект события
+  *@param {HTMLObject} clickEvt объект события
   */
   function onClicksButtonsScale(clickEvt) {
-    var step = 25;
+    var STEP = 25;
     var valuePercent = controlValue.getAttribute('value');
-    var value = +(valuePercent.slice(0, -1));
+    var VALUE_SCALE = +(valuePercent.slice(0, -1));
     var target = clickEvt.target;
     if (target === minButton) {
-      if ((value - step) >= 25) {
-        value = value - step;
+      if ((VALUE_SCALE - STEP) >= 25) {
+        VALUE_SCALE = VALUE_SCALE - STEP;
       }
     }
     if (target === maxButton) {
-      if ((value + step) <= 100) {
-        value = value + step;
+      if ((VALUE_SCALE + STEP) <= 100) {
+        VALUE_SCALE = VALUE_SCALE + STEP;
       }
     }
-    controlValue.setAttribute('value', value + '%');
-    imgScale.setAttribute('style', 'transform: scale(' + window.determinesRatio(0, value, 1) + ')');
+    controlValue.setAttribute('value', VALUE_SCALE + '%');
+    imgScale.setAttribute('style', 'transform: scale(' + window.determinesRatio(0, VALUE_SCALE, 1) + ')');
   }
   /**
   *Добавляем стили объекту preview
-  *@param {DOMobject} object объект на котором будет изменен стиль, если соответствует условию.
+  *@param {DOMObject} object объект на котором будет изменен стиль, если соответствует условию.
   */
   function addFiltersImg(object) {
     var preview = document.querySelector('.img-upload__preview');
     if (object === effectsList.querySelector('#effect-chrome')) {
       preview.setAttribute('style', 'filter:' + 'grayscale(' + window.determinesRatio(1, 3, effectLevelValue) + ')');
+      effectLevel.classList.remove('hidden');
     }
     if (object === effectsList.querySelector('#effect-none')) {
       preview.setAttribute('style', 'filter:' + 'none');
+      effectLevel.classList.add('hidden');
     }
     if (object === effectsList.querySelector('#effect-sepia')) {
       preview.setAttribute('style', 'filter:' + 'sepia(' + window.determinesRatio(0, 1, effectLevelValue) + ')');
+      effectLevel.classList.remove('hidden');
     }
     if (object === effectsList.querySelector('#effect-marvin')) {
       preview.setAttribute('style', 'filter:' + 'invert(' + window.determinesRatio(0, 100, effectLevelValue) + '%)');
+      effectLevel.classList.remove('hidden');
     }
     if (object === effectsList.querySelector('#effect-phobos')) {
       preview.setAttribute('style', 'filter:' + 'blur(' + window.determinesRatio(0, 10, effectLevelValue) + 'px)');
+      effectLevel.classList.remove('hidden');
     }
     if (object === effectsList.querySelector('#effect-heat')) {
       preview.setAttribute('style', 'filter:' + 'brightness(' + window.determinesRatio(1, 3, effectLevelValue) + ')');
+      effectLevel.classList.remove('hidden');
     }
   }
   /**
   *Добавляет эффекты к загружаемому изображению
-  *@param {HTMLobject} clickEvt объект события
+  *@param {HTMLObject} clickEvt объект события
   */
   function onClickEffects(clickEvt) {
     var target = clickEvt.target;
@@ -96,11 +103,14 @@
         if (arrayHashtags[i].length > 20) {
           inputHashtags.setCustomValidity('ХэшТэг должен быть меньше 20 символов');
           event.preventDefault();
+          inputHashtags.setAttribute('style', 'border: 5px solid red');
           return;
         }
         if (arrayHashtags[i].charAt(0) !== '#') {
           inputHashtags.setCustomValidity('ХэшТэг начинается с решетки');
           event.preventDefault();
+          inputHashtags.setAttribute('style', 'border: 5px solid red');
+          return;
         } else {
           inputHashtags.setCustomValidity('');
         }
@@ -108,17 +118,25 @@
           if (arrayHashtags[i].toLowerCase() === arrayHashtags[i + 1]) {
             inputHashtags.setCustomValidity('ХэшТэги не должны повторяться');
             event.preventDefault();
+            inputHashtags.setAttribute('style', 'border: 5px solid red');
             return;
           }
+        }
+        if (arrayHashtags[i] === '#' && arrayHashtags[i].length === 1) {
+          inputHashtags.setCustomValidity('ХэшТэг не может состоять из одной решетки');
+          event.preventDefault();
+          return;
         }
       }
 
       if (arrayHashtags.length > 5) {
         inputHashtags.setCustomValidity('Вы ввели больше пяти ХэшТэгов');
         event.preventDefault();
+        inputHashtags.setAttribute('style', 'border: 5px solid red');
         return;
       }
     }
+    inputHashtags.setAttribute('style', 'none');
   }
   /**
   *добавляет к элементу(element) класс  hidden, тем самым элемент не отображается.
@@ -129,7 +147,7 @@
   }
   /**
   *Перемещаем ползунок. При перемещении изменяется уровень эффекта
-  *@param {HTMLobject} evt элемент на котором сработало событие.
+  *@param {HTMLObject} evt элемент на котором сработало событие.
   */
   function omMousedownPin(evt) {
     evt.preventDefault();
@@ -181,7 +199,7 @@
   *Скрывает форму
   */
   function removeListenerForm() {
-    imgUploadInput.removeEventListener('keydown', onCloseFormEsc);
+    document.removeEventListener('keydown', onCloseFormEsc);
     closeButton.removeEventListener('click', onCloseButton);
     minButton.removeEventListener('click', onClicksButtonsScale);
     maxButton.removeEventListener('click', onClicksButtonsScale);
@@ -190,6 +208,7 @@
     pin.removeEventListener('mousedown', omMousedownPin);
     сloseElement(imageEditingForm);
     imgUploadInput.value = '';
+    inputHashtags.setAttribute('style', 'none');
   }
 
   function onCloseButton() {
@@ -197,8 +216,13 @@
   }
 
   function onCloseFormEsc(evt) {
-    if (evt.keyCode === window.keyCodeEsc) {
-      removeListenerForm();
+    if (evt.keyСode === window.KEY_CODE_ESC) {
+      if (evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description')) {
+        return;
+      } else {
+        form.reset();
+        removeListenerForm();
+      }
     }
   }
 
@@ -208,19 +232,23 @@
   function onChangeimageEditingForm() {
     imageEditingForm.classList.remove('hidden');
     closeButton.addEventListener('click', onCloseButton);
-    imgUploadInput.addEventListener('keydown', onCloseFormEsc);
+    document.addEventListener('keydown', onCloseFormEsc);
     minButton.addEventListener('click', onClicksButtonsScale);
     maxButton.addEventListener('click', onClicksButtonsScale);
     inputHashtags.addEventListener('input', onInputHashtags);
     effectsList.addEventListener('click', onClickEffects);
     pin.addEventListener('mousedown', omMousedownPin);
-    form.addEventListener('submit', function (evt) {
-      window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
+
+    function onSubmitForm(evt) {
       evt.preventDefault();
+      window.upload(new FormData(form), showSuccessMessage, showErrorMessage);
       imageEditingForm.classList.add('hidden');
       imgUploadInput.value = '';
-      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
-    });
+      form.reset();
+      form.removeEventListener('submit', onSubmitForm);
+      document.querySelector('.img-filters').classList.remove('hidden');
+    }
+    form.addEventListener('submit', onSubmitForm);
   }
 
   function showMessage(templateSelector) {
@@ -246,7 +274,7 @@
 
     // Закрывает сообщение по Enter
     function onEnterClose(evt) {
-      if (evt.keyCode === window.keyCodeEnter) {
+      if (evt.keyCode === window.KEY_CODE_ENTER) {
         closeMessagePopup();
       }
     }
@@ -268,6 +296,5 @@
   function showErrorMessage() {
     showMessage('error');
   }
-
   imgUploadInput.addEventListener('change', onChangeimageEditingForm);
 })();
