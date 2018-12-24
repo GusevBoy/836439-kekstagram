@@ -217,7 +217,7 @@
   }
 
   function onCloseFormEsc(evt) {
-    if (evt.keyСode === window.KEY_CODE_ESC) {
+    if (evt.keyСode === window.KEY_CODE_ESC || evt.key === 'Escape') {
       if (evt.target.classList.contains('text__hashtags') || evt.target.classList.contains('text__description')) {
         return;
       } else {
